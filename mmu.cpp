@@ -44,7 +44,6 @@ void initialize(string randfile){
 int main(int argc, char **argv){
 	int opt;
 	while ((opt = getopt (argc, argv, "a:o:f:")) != -1) {
-		//instantiate a scheduler based on the -s option
         if (opt == 'a') {}
         if (opt == 'o') {}
         if (opt == 'f') {}
