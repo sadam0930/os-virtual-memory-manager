@@ -2,6 +2,8 @@
 #include <fstream>
 #include <string>
 #include <sstream>
+#include <vector>
+#include <unistd.h>
 
 #include "pager.h"
 
