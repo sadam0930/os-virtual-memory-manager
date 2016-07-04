@@ -5,5 +5,10 @@ class Frame {
 	
 };
 
+//may be unnecessary since FramTable is an array
+class FrameTable {
+
+};
+
 #endif
 
