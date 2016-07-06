@@ -1,6 +1,10 @@
 #ifndef frame_header
 #define frame_header
 
+#ifndef nullptr
+#define nullptr __null
+#endif
+
 class Frame {
 	
 };
