@@ -14,6 +14,11 @@
 
 using namespace std;
 
+typedef enum readWrite {
+	READ,
+	WRITE
+} readWrite;
+
 // global
 vector<int> randvals; 
 unsigned int ofs = 0;
@@ -50,6 +55,7 @@ int main(int argc, char **argv){
 	int opt;
 	bool Oflag, Pflag, Fflag, Sflag = false;
 	int numFrames = 0;
+	Pager * pager;
 	while ((opt = getopt (argc, argv, "a:o:f:")) != -1) {
         if (opt == 'a') {
         	//get algorithm type from optarg[0]
@@ -120,8 +126,8 @@ int main(int argc, char **argv){
 			} else {
 				//First int is read (0) or write (1)
 				//Second int is virtual page number
-				int readWrite, virPageNum = 0;
-				iss >> readWrite >> virPageNum;
+				int readOrWrite, virPageNum = 0;
+				iss >> readOrWrite >> virPageNum;
 
 
 			}
