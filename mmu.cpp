@@ -12,6 +12,8 @@
 #define nullptr __null
 #endif
 
+#define MAXFRAMES 64
+
 using namespace std;
 
 typedef enum readWrite {
@@ -53,7 +55,7 @@ void initialize(string randfile){
 //begin memory management unit simulation
 int main(int argc, char **argv){
 	int opt;
-	bool Oflag, Pflag, Fflag, Sflag = false;
+	bool Oflag, Pflag, Fflag, Sflag, pflag, fflag, aflag = false;
 	int numFrames = 0;
 	Pager * pager;
 	while ((opt = getopt (argc, argv, "a:o:f:")) != -1) {
@@ -83,18 +85,29 @@ int main(int argc, char **argv){
         	for(int i = 0; i < strlen(optarg); i++){
         		switch(optarg[i]) {
 					case 'O':
-						Oflag = true;
+						Oflag = true; break;
 					case 'P':
-						Pflag = true;
+						Pflag = true; break;
 					case 'F':
-						Fflag = true;
+						Fflag = true; break;
 					case 'S':
-						Sflag = true;
+						Sflag = true; break;
+					//below options are not graded
+					case 'p':
+						pflag = true; break;
+					case 'f':
+						fflag = true; break;
+					case 'a':
+						aflag = true; break;
 				}
         	}
         }
         if (opt == 'f') {
         	sscanf(optarg, "%d", &numFrames);
+        	if (numFrames > MAXFRAMES){
+				cout<<"Error: number of frames is too large (max=64)"<<endl;
+				exit(1);
+			}
         }
     }
 
