@@ -5,7 +5,8 @@
 #include <vector>
 #include <unistd.h>
 
-#include "pager.h"
+#include "pager.h" //algorithms
+#include "pagetableentry.h"
 
 #ifndef nullptr
 #define nullptr __null
@@ -48,7 +49,7 @@ void initialize(string randfile){
 int main(int argc, char **argv){
 	int opt;
 	bool Oflag, Pflag, Fflag, Sflag = false;
-	int numFrames;
+	int numFrames = 0;
 	while ((opt = getopt (argc, argv, "a:o:f:")) != -1) {
         if (opt == 'a') {
         	//get algorithm type from optarg[0]
@@ -95,16 +96,25 @@ int main(int argc, char **argv){
 	string randfile = argv[optind+1];
 
 	initialize(randfile);
+	if(numFrames <= 0) { numFrames = 32 };
 
 	//start processing instructions from file
 	ifstream f;
 	f.open(filename);
+
 	if(f.is_open()){
-		string line;
+		string instruction;
+		//maps virtual page to a frame
+		//assume 64 virtual pages
+		vector<PageTableEntry> * pageTable = new vector<PageTableEntry>(64); 
+		//inverse page table mapping frame to a virtual page
+		vector<unsigned int> * frameToPage = new vector<unsigned int>(numFrames); 
+		vector<unsigned int> * frameTable = new vector<unsigned int>();
+
 		//Each line in the file is an instruction
-		while(getline(f, line)){
-			istringstream iss(line);
-			if(line[0] == "#"){
+		while(getline(f, instruction)){
+			istringstream iss(instruction);
+			if(instruction[0] == "#"){
 				//ignore commented lines
 				continue;
 			} else {
