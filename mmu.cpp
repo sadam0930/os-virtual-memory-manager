@@ -113,7 +113,7 @@ int main(int argc, char **argv){
 	vector<unsigned int> * frameTable = new vector<unsigned int>(numFrames); //inverse page table mapping frame to a virtual page
 	vector<unsigned int> * framesInMemory = new vector<unsigned int>(); //keep track of frames in use
 	if(numFrames <= 0) { numFrames = 32 };
-	
+
 	//start processing instructions from file
 	ifstream f;
 	f.open(filename);
@@ -127,8 +127,7 @@ int main(int argc, char **argv){
 				//ignore commented lines
 				continue;
 			} else {
-				//First int is read (0) or write (1)
-				//Second int is virtual page number
+				//First int is read (0) or write (1); Second int is virtual page number
 				int readOrWrite, virPageNum = 0;
 				iss >> readOrWrite >> virPageNum;
 
