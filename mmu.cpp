@@ -127,8 +127,8 @@ int main(int argc, char **argv){
 		//assume 64 virtual pages
 		vector<PageTableEntry> * pageTable = new vector<PageTableEntry>(64); 
 		//inverse page table mapping frame to a virtual page
-		vector<unsigned int> * frameToPage = new vector<unsigned int>(numFrames); 
-		vector<unsigned int> * frameTable = new vector<unsigned int>();
+		vector<unsigned int> * frameTable = new vector<unsigned int>(numFrames);
+		// vector<unsigned int> * frameToPage = new vector<unsigned int>(numFrames); 
 
 		//Each line in the file is an instruction
 		while(getline(f, instruction)){
