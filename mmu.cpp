@@ -108,22 +108,18 @@ int main(int argc, char **argv){
 	string randfile = argv[optind+1];
 
 	initialize(randfile);
-	if(numFrames <= 0) { numFrames = 32 };
 
+	vector<PageTableEntry> * pageTable = new vector<PageTableEntry>(64); //maps virtual page to a frame. Assume 64 pages.
+	vector<unsigned int> * frameTable = new vector<unsigned int>(numFrames); //inverse page table mapping frame to a virtual page
+	vector<unsigned int> * framesInMemory = new vector<unsigned int>(); //keep track of frames in use
+	if(numFrames <= 0) { numFrames = 32 };
+	
 	//start processing instructions from file
 	ifstream f;
 	f.open(filename);
 
 	if(f.is_open()){
 		string instruction;
-		//maps virtual page to a frame
-		//assume 64 virtual pages
-		vector<PageTableEntry> * pageTable = new vector<PageTableEntry>(64); 
-		//inverse page table mapping frame to a virtual page
-		vector<unsigned int> * frameTable = new vector<unsigned int>(numFrames);
-		//keep track of frames in use
-		vector<unsigned int> * framesInMemory = new vector<unsigned int>(); 
-
 		//Each line in the file is an instruction
 		while(getline(f, instruction)){
 			istringstream iss(instruction);
