@@ -68,7 +68,7 @@ int main(int argc, char **argv){
         	} else if(optarg[0] == 'r'){
 
         	} else if(optarg[0] == 'f'){
-
+        		pager = new FIFO_Pager();
         	} else if(optarg[0] == 's'){
 
         	} else if(optarg[0] == 'c'){
@@ -84,21 +84,14 @@ int main(int argc, char **argv){
         if (opt == 'o') {
         	for(int i = 0; i < strlen(optarg); i++){
         		switch(optarg[i]) {
-					case 'O':
-						Oflag = true; break;
-					case 'P':
-						Pflag = true; break;
-					case 'F':
-						Fflag = true; break;
-					case 'S':
-						Sflag = true; break;
+					case 'O': Oflag = true; break;
+					case 'P': Pflag = true; break;
+					case 'F': Fflag = true; break;
+					case 'S': Sflag = true; break;
 					//below options are not graded
-					case 'p':
-						pflag = true; break;
-					case 'f':
-						fflag = true; break;
-					case 'a':
-						aflag = true; break;
+					case 'p': pflag = true; break;
+					case 'f': fflag = true; break;
+					case 'a': aflag = true; break;
 				}
         	}
         }
@@ -128,7 +121,8 @@ int main(int argc, char **argv){
 		vector<PageTableEntry> * pageTable = new vector<PageTableEntry>(64); 
 		//inverse page table mapping frame to a virtual page
 		vector<unsigned int> * frameTable = new vector<unsigned int>(numFrames);
-		// vector<unsigned int> * frameToPage = new vector<unsigned int>(numFrames); 
+		//keep track of frames in use
+		vector<unsigned int> * framesInMemory = new vector<unsigned int>(); 
 
 		//Each line in the file is an instruction
 		while(getline(f, instruction)){
@@ -142,7 +136,7 @@ int main(int argc, char **argv){
 				int readOrWrite, virPageNum = 0;
 				iss >> readOrWrite >> virPageNum;
 
-
+				// cout << readOrWrite << " " << virPageNum << endl; //test
 			}
 		}
 
