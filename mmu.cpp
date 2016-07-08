@@ -96,7 +96,7 @@ int main(int argc, char **argv){
 	int opt;
 	int numFrames = 0;
 	Pager * pager;
-	
+
 	//can reach over 1 million - using 64 bit counters
 	long long numInstruction, umCount, mCount, oCount, iCount, zCount, totalCost;
 	bool Oflag, Pflag, Fflag, Sflag, pflag, fflag, aflag;
@@ -194,6 +194,7 @@ int main(int argc, char **argv){
 						//all frames have been written to; pager algorithm picks one to overwrite
 						frameIndex = pager->allocate_frame(pageTable, frameTable, framesInMemory);
 						unmap(pageTable, frameTable, frameIndex);
+						umCount++;
 
 						if(Oflag){
 							cout << numInstruction << ": UNMAP" << setfill(' ') << setw(4) << frameTable->at(frameIndex) << setfill(' ') << setw(4) << frameIndex << endl;
@@ -202,6 +203,7 @@ int main(int argc, char **argv){
 						//if page was modified, need to swap it to disk
 						if(pageTable->at(frameTable->at(frameIndex))->modified == true){
 							page_out(pageTable, frameTable, frameIndex);
+							oCount++;
 
 							if(Oflag){
 								cout << numInstruction << ": OUT" << setfill(' ') << setw(6) << frameTable->at(frameIndex) << setfill(' ') << setw(4) << frameIndex << endl;
@@ -213,6 +215,7 @@ int main(int argc, char **argv){
 					if(pageTable->at(virPageNum)->pagedout == true){
 						//page was swapped to disk; bring it back to the allocated frame
 						page_in(frameIndex);
+						iCount++;
 
 						if(Oflag){
 							cout << numInstruction << ": IN" << setw(7) << virPageNum << setfill(' ') << setw(4) << frameIndex << endl;
@@ -220,6 +223,7 @@ int main(int argc, char **argv){
 					} else {
 						//page was not swapped; zero the frame
 						zero(frameIndex);
+						zCount++;
 
 						if(Oflag){
 							cout << numInstruction << ": ZERO" << setfill(' ') << setw(9) << frameIndex << endl;
@@ -227,6 +231,7 @@ int main(int argc, char **argv){
 					}
 					//map virtual page to frame
 					map(pageTable->at(virPageNum), virPageNum, frameIndex, frameTable);
+					mCount++;
 					
 					if(Oflag){
 						cout << numInstruction << ": MAP" << setfill(' ') << setw(6) << virPageNum << setfill(' ') << setw(4) << frameIndex << endl;
