@@ -1,4 +1,5 @@
 #include <vector>
+#include <iostream>
 #include "pagetableentry.h"
 
 #ifndef nullptr
@@ -19,9 +20,9 @@ differentiate how to how frames are allocated between algorithms
 //First In First Out
 class FIFO_Pager : public Pager {
 	public:
-		FIFO_Pager() : Pager() {}
+		FIFO_Pager(){}
 
-		//get framenum at the front and push it to the end
+		//get frameNum at the front and push it to the end
 		int allocate_frame(std::vector<PageTableEntry *> * pageTable, std::vector<unsigned int> * frameTable, std::vector<unsigned int> * framesInMemory) {
 			int frameNum = framesInMemory->front();
 			framesInMemory->erase(framesInMemory->begin());
