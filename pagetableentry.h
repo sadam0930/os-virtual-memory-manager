@@ -1,7 +1,7 @@
 #ifndef pte_header
 #define pte_header
 
-struct PageTableEntry {
+typedef struct PageTableEntry {
 	unsigned int present : 1;
 	unsigned int modified : 1;
 	unsigned int referenced : 1;

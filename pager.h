@@ -1,7 +1,5 @@
-#ifndef pager_header
-#define pager_header
-
-#include "frame.h"
+#include <vector>
+#include "pagetableentry.h"
 
 #ifndef nullptr
 #define nullptr __null
@@ -10,24 +8,24 @@
 //implementation will differ based on the scheduling algorithm
 class Pager {
 	public:
-		Pager();
-		virtual int allocate_frame(vector<PageTableEntry> * pageTable, vector<unsigned int> * frameTable, vector<unsigned int> * framesInMemory); 
+		Pager() {}
+		virtual int allocate_frame(std::vector<PageTableEntry *> * pageTable, std::vector<unsigned int> * frameTable, std::vector<unsigned int> * framesInMemory) =0;
 };
 
 /**************************************************************
 differentiate how to how frames are allocated between algorithms
 ***************************************************************/
 
-//First Come First Serve
+//First In First Out
 class FIFO_Pager : public Pager {
 	public:
-		FIFO_Pager();
+		FIFO_Pager() : Pager() {}
 
-		int allocate_frame(vector<PageTableEntry> * pageTable, vector<unsigned int> * frameTable, vector<unsigned int> * framesInMemory) {
-			int frameNum = -1;
-
+		//get framenum at the front and push it to the end
+		int allocate_frame(std::vector<PageTableEntry *> * pageTable, std::vector<unsigned int> * frameTable, std::vector<unsigned int> * framesInMemory) {
+			int frameNum = framesInMemory->front();
+			framesInMemory->erase(framesInMemory->begin());
+			framesInMemory->push_back(frameNum);
 			return frameNum;
 		}
 };
-
-#endif
