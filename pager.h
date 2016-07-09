@@ -89,9 +89,35 @@ class fClock_Pager : public Pager {
 					break;
 				}
 				pageTable->at(frameTable->at(frameNum))->referenced = false;
-				pointer = (pointer+1)%framesInMemory->size();
+				pointer = (pointer+1) % framesInMemory->size();
 			}
-			pointer = (pointer+1)%framesInMemory->size();
+			pointer = (pointer+1) % framesInMemory->size();
+			return frameNum;
+		}
+};
+
+//Clock based on virtual pages
+class vClock_Pager : public Pager {
+	int pointer;
+
+	public:
+		vClock_Pager(){ pointer = 0; }
+
+		int allocate_frame(std::vector<PageTableEntry *> * pageTable, std::vector<unsigned int> * frameTable, std::vector<unsigned int> * framesInMemory) {
+			int frameNum;
+			
+			while(true){
+				if(pageTable->at(pointer)->present == true){
+					if(pageTable->at(pointer)->referenced == false){
+						frameNum = pageTable->at(pointer)->frameIndex;
+						break;
+					} else{
+						pageTable->at(pointer)->referenced = false;
+					}
+				}
+				pointer = (pointer+1) % pageTable->size();
+			}
+			pointer = (pointer+1) % pageTable->size();
 			return frameNum;
 		}
 };

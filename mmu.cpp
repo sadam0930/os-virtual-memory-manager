@@ -81,25 +81,15 @@ int main(int argc, char **argv){
 	while ((opt = getopt (argc, argv, "a:o:f:")) != -1) {
         if (opt == 'a') {
         	//get algorithm type from optarg[0]
-        	if(optarg[0] == 'N'){
-
-        	} else if(optarg[0] == 'l'){
-
-        	} else if(optarg[0] == 'r'){
-        		pager = new RAN_Pager();
-        	} else if(optarg[0] == 'f'){
-        		pager = new FIFO_Pager();
-        	} else if(optarg[0] == 's'){
-        		pager = new SC_Pager();
-        	} else if(optarg[0] == 'c'){
-        		pager = new fClock_Pager();
-        	} else if(optarg[0] == 'X'){
-
-        	} else if(optarg[0] == 'a'){
-
-        	} else if(optarg[0] == 'Y'){
-
-        	} 
+        	if(optarg[0] == 'N'){ } 
+        	else if(optarg[0] == 'l'){ } 
+        	else if(optarg[0] == 'r'){ pager = new RAN_Pager(); } 
+        	else if(optarg[0] == 'f'){ pager = new FIFO_Pager(); } 
+    		else if(optarg[0] == 's'){ pager = new SC_Pager(); } 
+        	else if(optarg[0] == 'c'){ pager = new fClock_Pager(); } 
+        	else if(optarg[0] == 'X'){ pager = new vClock_Pager(); } 
+        	else if(optarg[0] == 'a'){ } 
+        	else if(optarg[0] == 'Y'){ } 
         }
         if (opt == 'o') {
         	for(int i = 0; i < strlen(optarg); i++){
