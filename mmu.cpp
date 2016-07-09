@@ -82,7 +82,7 @@ int main(int argc, char **argv){
         if (opt == 'a') {
         	//get algorithm type from optarg[0]
         	if(optarg[0] == 'N'){ } 
-        	else if(optarg[0] == 'l'){ } 
+        	else if(optarg[0] == 'l'){ pager = new LRU_Pager(); } 
         	else if(optarg[0] == 'r'){ pager = new RAN_Pager(); } 
         	else if(optarg[0] == 'f'){ pager = new FIFO_Pager(); } 
     		else if(optarg[0] == 's'){ pager = new SC_Pager(); } 
@@ -200,6 +200,9 @@ int main(int argc, char **argv){
 					if(Oflag){
 						cout << numInstruction << ": MAP" << setfill(' ') << setw(6) << virPageNum << setfill(' ') << setw(4) << frameIndex << endl;
 					}
+				} else {
+					//page already present
+					pager->update_frames(pageTable->at(virPageNum)->frameIndex, framesInMemory); //only used by LRU
 				}
 				//update page table entry based on operations
 				update_pte(readOrWrite, pageTable->at(virPageNum));

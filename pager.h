@@ -19,6 +19,8 @@ class Pager {
 		void setRando(Randval * rando) {
 			this->rando = rando;
 		}
+
+		virtual void update_frames(int frameIndex, std::vector<unsigned int> * framesInMemory) =0;
 };
 
 /**************************************************************
@@ -37,6 +39,8 @@ class FIFO_Pager : public Pager {
 			framesInMemory->push_back(frameNum);
 			return frameNum;
 		}
+
+		void update_frames(int frameIndex, std::vector<unsigned int> * framesInMemory){}
 };
 
 //Random selection
@@ -50,6 +54,8 @@ class RAN_Pager : public Pager {
 			framesInMemory->push_back(frameNum);
 			return frameNum;
 		}
+
+		void update_frames(int frameIndex, std::vector<unsigned int> * framesInMemory){}
 };
 
 //Second Chance
@@ -71,6 +77,8 @@ class SC_Pager : public Pager {
 			
 			return frameNum;
 		}
+
+		void update_frames(int frameIndex, std::vector<unsigned int> * framesInMemory){}
 };
 
 //Clock based on physical frames
@@ -94,6 +102,8 @@ class fClock_Pager : public Pager {
 			pointer = (pointer+1) % framesInMemory->size();
 			return frameNum;
 		}
+
+		void update_frames(int frameIndex, std::vector<unsigned int> * framesInMemory){}
 };
 
 //Clock based on virtual pages
@@ -119,5 +129,29 @@ class vClock_Pager : public Pager {
 			}
 			pointer = (pointer+1) % pageTable->size();
 			return frameNum;
+		}
+
+		void update_frames(int frameIndex, std::vector<unsigned int> * framesInMemory){}
+};
+
+//will use framesInMemory to track least recently used page
+class LRU_Pager : public Pager {
+	public:
+		LRU_Pager(){}
+
+		int allocate_frame(std::vector<PageTableEntry *> * pageTable, std::vector<unsigned int> * frameTable, std::vector<unsigned int> * framesInMemory) {
+			int frameNum = framesInMemory->front();
+			framesInMemory->erase(framesInMemory->begin());
+			framesInMemory->push_back(frameNum);
+			return frameNum;
+		}
+
+		void update_frames(int frameIndex, std::vector<unsigned int> * framesInMemory) {
+			for(int i=0; i < framesInMemory->size(); i++){
+				if(framesInMemory->at(i) == frameIndex){
+					framesInMemory->erase(framesInMemory->begin()+i);
+					framesInMemory->push_back(frameIndex);
+				}
+			}
 		}
 };
