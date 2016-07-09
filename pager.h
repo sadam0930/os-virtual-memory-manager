@@ -51,3 +51,24 @@ class RAN_Pager : public Pager {
 			return frameNum;
 		}
 };
+
+//Second Chance
+class SC_Pager : public Pager {
+	public:
+		SC_Pager(){}
+
+		int allocate_frame(std::vector<PageTableEntry *> * pageTable, std::vector<unsigned int> * frameTable, std::vector<unsigned int> * framesInMemory) {
+			int frameNum;
+			while(true){
+				frameNum = framesInMemory->front();
+				framesInMemory->erase(framesInMemory->begin());
+				framesInMemory->push_back(frameNum);
+				if(pageTable->at(frameTable->at(frameNum))->referenced == false){
+					break;
+				}
+				pageTable->at(frameTable->at(frameNum))->referenced = false;
+			}
+			
+			return frameNum;
+		}
+};

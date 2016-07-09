@@ -90,7 +90,7 @@ int main(int argc, char **argv){
         	} else if(optarg[0] == 'f'){
         		pager = new FIFO_Pager();
         	} else if(optarg[0] == 's'){
-
+        		pager = new SC_Pager();
         	} else if(optarg[0] == 'c'){
 
         	} else if(optarg[0] == 'X'){
