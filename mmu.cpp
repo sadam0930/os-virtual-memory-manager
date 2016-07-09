@@ -92,7 +92,7 @@ int main(int argc, char **argv){
         	} else if(optarg[0] == 's'){
         		pager = new SC_Pager();
         	} else if(optarg[0] == 'c'){
-
+        		pager = new fClock_Pager();
         	} else if(optarg[0] == 'X'){
 
         	} else if(optarg[0] == 'a'){
