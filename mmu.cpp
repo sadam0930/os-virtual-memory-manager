@@ -24,36 +24,10 @@ typedef enum readWrite {
 	WRITE
 } readWrite;
 
-// global
-vector<int> randvals; 
-unsigned int ofs = 0;
-int myrandom(int size) { 
-	int ranNum = randvals[ofs] % size;
-	ofs++;
-	if(ofs == randvals.size()-1){
-		ofs = 0;
-	}
-	return ranNum; 
-}
+//global
+Randval * rando;
 
-void initialize(string randfile, vector<PageTableEntry *> * pageTable){
-	ifstream f;
-	//read randfile
-	f.open(randfile);
-	if(f.is_open()){
-		string line;
-		//First line is the count of random numbers in the file
-		getline(f, line); //throw it away
-		//Each line in the file is a random number
-		while(getline(f, line)){
-			randvals.push_back(stoi(line, nullptr));
-		}
-	} else {
-		cout << "Could not open file: " << randfile << endl;
-		exit(1);
-	}
-	f.close();
-
+void initialize(vector<PageTableEntry *> * pageTable){
 	//initialize pageTable
 	for(int i = 0; i < MAXPAGES; i++){
 		pageTable->push_back(new PageTableEntry());
@@ -112,7 +86,7 @@ int main(int argc, char **argv){
         	} else if(optarg[0] == 'l'){
 
         	} else if(optarg[0] == 'r'){
-
+        		pager = new RAN_Pager();
         	} else if(optarg[0] == 'f'){
         		pager = new FIFO_Pager();
         	} else if(optarg[0] == 's'){
@@ -157,8 +131,8 @@ int main(int argc, char **argv){
 	vector<PageTableEntry *> * pageTable = new vector<PageTableEntry *>(); //maps virtual page to a frame. Assume 64 pages.
 	vector<unsigned int> * frameTable = new vector<unsigned int>(numFrames); //inverse page table mapping frame to a virtual page
 	vector<unsigned int> * framesInMemory = new vector<unsigned int>(); //keep track of frames in use
-
-	initialize(randfile, pageTable);
+	initialize(pageTable);
+	pager->setRando(new Randval(randfile));
 
 	//start processing instructions from file
 	ifstream f;
