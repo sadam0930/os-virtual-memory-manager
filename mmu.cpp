@@ -81,14 +81,14 @@ int main(int argc, char **argv){
 	while ((opt = getopt (argc, argv, "a:o:f:")) != -1) {
         if (opt == 'a') {
         	//get algorithm type from optarg[0]
-        	if(optarg[0] == 'N'){ } 
+        	if(optarg[0] == 'N'){ pager = new NRU_Pager(); } 
         	else if(optarg[0] == 'l'){ pager = new LRU_Pager(); } 
         	else if(optarg[0] == 'r'){ pager = new RAN_Pager(); } 
         	else if(optarg[0] == 'f'){ pager = new FIFO_Pager(); } 
     		else if(optarg[0] == 's'){ pager = new SC_Pager(); } 
         	else if(optarg[0] == 'c'){ pager = new fClock_Pager(); } 
         	else if(optarg[0] == 'X'){ pager = new vClock_Pager(); } 
-        	else if(optarg[0] == 'a'){ } 
+        	else if(optarg[0] == 'a'){ pager = new fAging_Pager(); } 
         	else if(optarg[0] == 'Y'){ } 
         }
         if (opt == 'o') {

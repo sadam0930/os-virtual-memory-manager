@@ -155,3 +155,78 @@ class LRU_Pager : public Pager {
 			}
 		}
 };
+
+/*
+Not Recently Used:
+Picks a page at random based on the lowest class it falls into
+3. referenced, modified
+2. referenced, not modified
+1. not referenced, modified
+0. not referenced, not modified
+*/
+class NRU_Pager : public Pager {
+	int numReplacements;
+	
+	public:
+		NRU_Pager(){ numReplacements = 0; }
+
+		int allocate_frame(std::vector<PageTableEntry *> * pageTable, std::vector<unsigned int> * frameTable, std::vector<unsigned int> * framesInMemory) {
+			int frameNum;
+			std::vector<PageTableEntry *> pclass[4];
+			numReplacements++;
+
+			//categorize all of the virtual pages
+			for(int i=0; i < pageTable->size(); i++){
+				PageTableEntry * pte = pageTable->at(i);
+
+				if(pte->present == true){
+					if(pte->referenced == false && pte->modified == false){
+						pclass[0].push_back(pte);
+					} else if(pte->referenced == false && pte->modified == true){
+						pclass[1].push_back(pte);
+					} else if(pte->referenced == true && pte->modified == false){
+						pclass[2].push_back(pte);
+					} else if(pte->referenced == true && pte->modified == true){
+						pclass[3].push_back(pte);
+					}
+				}
+			}
+
+			//choose page to replace starting from lowest class
+			for(int i=0; i < 4; i++){
+				if(!pclass[i].empty()){
+					int p_index = rando->getRandom() % pclass[i].size();
+					frameNum = pclass[i][p_index]->frameIndex;
+					break; //got it, now leave
+				}
+			}
+
+			//reset r bit per every 10 page faults
+			if(numReplacements == 10){
+				numReplacements = 0;
+				for(int i=0; i < pageTable->size(); i++){
+					if(pageTable->at(i)->present == true){
+						pageTable->at(i)->referenced = false;
+					}
+				}
+			}
+
+			return frameNum;
+		}
+
+		void update_frames(int frameIndex, std::vector<unsigned int> * framesInMemory){}
+};
+
+class fAging_Pager : public Pager {
+	public:
+		fAging_Pager(){}
+
+		//get frameNum at the front and push it to the end
+		int allocate_frame(std::vector<PageTableEntry *> * pageTable, std::vector<unsigned int> * frameTable, std::vector<unsigned int> * framesInMemory) {
+			int frameNum;
+			
+			return frameNum;
+		}
+
+		void update_frames(int frameIndex, std::vector<unsigned int> * framesInMemory){}
+};
