@@ -217,14 +217,88 @@ class NRU_Pager : public Pager {
 		void update_frames(int frameIndex, std::vector<unsigned int> * framesInMemory){}
 };
 
+//Aging based on physical frames
 class fAging_Pager : public Pager {
+	std::vector<unsigned int> ages;
+
 	public:
 		fAging_Pager(){}
 
-		//get frameNum at the front and push it to the end
+		int allocate_frame(std::vector<PageTableEntry *> * pageTable, std::vector<unsigned int> * frameTable, std::vector<unsigned int> * framesInMemory) {
+			int frameNum = 0;
+			//initialize age vector the first time with starting age of 0
+			if(ages.size() == 0){
+				ages = std::vector<unsigned int>(framesInMemory->size(), 0);
+			}
+
+			//traverse age vector to find lowest age; push back age with right shift
+			PageTableEntry * pte;
+			for(int i=0; i < framesInMemory->size(); i++){
+				pte = pageTable->at(frameTable->at(i));
+				ages.at(i) = ages.at(i) >> 1 | pte->referenced << 31;
+				pte->referenced = 0;
+
+				if(ages.at(i) < ages.at(frameNum)){
+					frameNum = i;
+				}
+			}
+
+			//reset age
+			ages[frameNum] = 0;
+
+			return frameNum;
+		}
+
+		void update_frames(int frameIndex, std::vector<unsigned int> * framesInMemory){}
+};
+
+//Aging based on virtual pages
+class vAging_Pager : public Pager {
+	std::vector<unsigned int> ages;
+
+	public:
+		vAging_Pager(){}
+
 		int allocate_frame(std::vector<PageTableEntry *> * pageTable, std::vector<unsigned int> * frameTable, std::vector<unsigned int> * framesInMemory) {
 			int frameNum;
 			
+			//initialize age vector the first time with starting age of 0
+			if(ages.size() == 0){
+				ages = std::vector<unsigned int>(pageTable->size(), 0);
+			}
+
+			//traverse age vector to find lowest age; push back age with right shift
+			PageTableEntry * pte;
+			int ageIdx = 0;
+
+			//first start from the lowest present entry
+			for(int i=0; i < pageTable->size(); i++){
+				pte = pageTable->at(i);
+				if(pte->present == true){
+					ageIdx = i;
+					break;
+				}
+			}
+
+			//now find lowest age
+			for(int i=ageIdx; i < pageTable->size(); i++){
+				pte = pageTable->at(i);
+				ages.at(i) = ages.at(i) >> 1 | pte->referenced << 31;
+				
+				if(pte->present == true){
+					pte->referenced = false;
+
+					if(ages.at(i) < ages.at(ageIdx)){
+						ageIdx = i;
+					}
+				}
+
+			}
+			frameNum = pageTable->at(ageIdx)->frameIndex;
+
+			//reset age
+			ages[ageIdx] = 0;
+
 			return frameNum;
 		}
 

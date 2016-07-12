@@ -89,7 +89,7 @@ int main(int argc, char **argv){
         	else if(optarg[0] == 'c'){ pager = new fClock_Pager(); } 
         	else if(optarg[0] == 'X'){ pager = new vClock_Pager(); } 
         	else if(optarg[0] == 'a'){ pager = new fAging_Pager(); } 
-        	else if(optarg[0] == 'Y'){ } 
+        	else if(optarg[0] == 'Y'){ pager = new vAging_Pager(); }  
         }
         if (opt == 'o') {
         	for(int i = 0; i < strlen(optarg); i++){
