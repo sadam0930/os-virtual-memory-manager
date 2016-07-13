@@ -20,7 +20,7 @@ class Pager {
 			this->rando = rando;
 		}
 
-		virtual void update_frames(int frameIndex, std::vector<unsigned int> * framesInMemory) =0;
+		virtual void update_frames(unsigned int frameIndex, std::vector<unsigned int> * framesInMemory) =0;
 };
 
 /**************************************************************
@@ -40,7 +40,7 @@ class FIFO_Pager : public Pager {
 			return frameNum;
 		}
 
-		void update_frames(int frameIndex, std::vector<unsigned int> * framesInMemory){}
+		void update_frames(unsigned int frameIndex, std::vector<unsigned int> * framesInMemory){}
 };
 
 //Random selection
@@ -55,7 +55,7 @@ class RAN_Pager : public Pager {
 			return frameNum;
 		}
 
-		void update_frames(int frameIndex, std::vector<unsigned int> * framesInMemory){}
+		void update_frames(unsigned int frameIndex, std::vector<unsigned int> * framesInMemory){}
 };
 
 //Second Chance
@@ -78,7 +78,7 @@ class SC_Pager : public Pager {
 			return frameNum;
 		}
 
-		void update_frames(int frameIndex, std::vector<unsigned int> * framesInMemory){}
+		void update_frames(unsigned int frameIndex, std::vector<unsigned int> * framesInMemory){}
 };
 
 //Clock based on physical frames
@@ -103,7 +103,7 @@ class fClock_Pager : public Pager {
 			return frameNum;
 		}
 
-		void update_frames(int frameIndex, std::vector<unsigned int> * framesInMemory){}
+		void update_frames(unsigned int frameIndex, std::vector<unsigned int> * framesInMemory){}
 };
 
 //Clock based on virtual pages
@@ -131,7 +131,7 @@ class vClock_Pager : public Pager {
 			return frameNum;
 		}
 
-		void update_frames(int frameIndex, std::vector<unsigned int> * framesInMemory){}
+		void update_frames(unsigned int frameIndex, std::vector<unsigned int> * framesInMemory){}
 };
 
 //will use framesInMemory to track least recently used page
@@ -214,7 +214,7 @@ class NRU_Pager : public Pager {
 			return frameNum;
 		}
 
-		void update_frames(int frameIndex, std::vector<unsigned int> * framesInMemory){}
+		void update_frames(unsigned int frameIndex, std::vector<unsigned int> * framesInMemory){}
 };
 
 //Aging based on physical frames
@@ -249,7 +249,7 @@ class fAging_Pager : public Pager {
 			return frameNum;
 		}
 
-		void update_frames(int frameIndex, std::vector<unsigned int> * framesInMemory){}
+		void update_frames(unsigned int frameIndex, std::vector<unsigned int> * framesInMemory){}
 };
 
 //Aging based on virtual pages
@@ -302,5 +302,5 @@ class vAging_Pager : public Pager {
 			return frameNum;
 		}
 
-		void update_frames(int frameIndex, std::vector<unsigned int> * framesInMemory){}
+		void update_frames(unsigned int frameIndex, std::vector<unsigned int> * framesInMemory){}
 };
