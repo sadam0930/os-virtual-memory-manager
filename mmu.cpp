@@ -6,6 +6,7 @@
 #include <unistd.h>
 #include <iostream>
 #include <iomanip>
+#include <cstring>
 
 #include "pager.h" //algorithms
 #include "pagetableentry.h"
@@ -68,7 +69,7 @@ void update_pte(int readOrWrite, PageTableEntry * pte){
 //begin memory management unit simulation
 int main(int argc, char **argv){
 	int opt;
-	int numFrames = 0;
+	unsigned int numFrames = 0;
 	Pager * pager;
 
 	//can reach over 1 million - using 64 bit counters
@@ -213,7 +214,7 @@ int main(int argc, char **argv){
 		//Print summary info based on flags
 		if(Pflag){
 			//print pagetable
-			for(int i=0; i < pageTable->size(); i++){
+			for(unsigned int i=0; i < pageTable->size(); i++){
 				PageTableEntry * pte = pageTable->at(i);
 				if(pte->present == true){
 					cout << i << ":";
@@ -229,7 +230,7 @@ int main(int argc, char **argv){
 		}
 
 		if(Fflag){
-			for(int i=0; i < frameTable->size(); i++){
+			for(unsigned int i=0; i < frameTable->size(); i++){
 				cout << frameTable->at(i) << " ";			
 			}
 			cout << endl;

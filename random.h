@@ -7,6 +7,10 @@
 #include <vector>
 #include <iostream>
 
+#ifndef nullptr
+#define nullptr __null
+#endif
+
 
 class Randval {
 	std::vector<int> randvals;

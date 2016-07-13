@@ -147,7 +147,7 @@ class LRU_Pager : public Pager {
 		}
 
 		void update_frames(int frameIndex, std::vector<unsigned int> * framesInMemory) {
-			for(int i=0; i < framesInMemory->size(); i++){
+			for(unsigned int i=0; i < framesInMemory->size(); i++){
 				if(framesInMemory->at(i) == frameIndex){
 					framesInMemory->erase(framesInMemory->begin()+i);
 					framesInMemory->push_back(frameIndex);
@@ -176,7 +176,7 @@ class NRU_Pager : public Pager {
 			numReplacements++;
 
 			//categorize all of the virtual pages
-			for(int i=0; i < pageTable->size(); i++){
+			for(unsigned int i=0; i < pageTable->size(); i++){
 				PageTableEntry * pte = pageTable->at(i);
 
 				if(pte->present == true){
@@ -204,7 +204,7 @@ class NRU_Pager : public Pager {
 			//reset r bit per every 10 page faults
 			if(numReplacements == 10){
 				numReplacements = 0;
-				for(int i=0; i < pageTable->size(); i++){
+				for(unsigned int i=0; i < pageTable->size(); i++){
 					if(pageTable->at(i)->present == true){
 						pageTable->at(i)->referenced = false;
 					}
@@ -233,7 +233,7 @@ class fAging_Pager : public Pager {
 
 			//traverse age vector to find lowest age; push back age with right shift
 			PageTableEntry * pte;
-			for(int i=0; i < framesInMemory->size(); i++){
+			for(unsigned int i=0; i < framesInMemory->size(); i++){
 				pte = pageTable->at(frameTable->at(i));
 				ages.at(i) = ages.at(i) >> 1 | pte->referenced << 31;
 				pte->referenced = 0;
@@ -272,7 +272,7 @@ class vAging_Pager : public Pager {
 			int ageIdx = 0;
 
 			//first start from the lowest present entry
-			for(int i=0; i < pageTable->size(); i++){
+			for(unsigned int i=0; i < pageTable->size(); i++){
 				pte = pageTable->at(i);
 				if(pte->present == true){
 					ageIdx = i;
@@ -281,7 +281,7 @@ class vAging_Pager : public Pager {
 			}
 
 			//now find lowest age
-			for(int i=ageIdx; i < pageTable->size(); i++){
+			for(unsigned int i=ageIdx; i < pageTable->size(); i++){
 				pte = pageTable->at(i);
 				ages.at(i) = ages.at(i) >> 1 | pte->referenced << 31;
 				
