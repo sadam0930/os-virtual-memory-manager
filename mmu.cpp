@@ -93,7 +93,7 @@ int main(int argc, char **argv){
         	else if(optarg[0] == 'Y'){ pager = new vAging_Pager(); }  
         }
         if (opt == 'o') {
-        	for(int i = 0; i < strlen(optarg); i++){
+        	for(unsigned int i = 0; i < strlen(optarg); i++){
         		switch(optarg[i]) {
 					case 'O': Oflag = true; break;
 					case 'P': Pflag = true; break;

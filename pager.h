@@ -146,7 +146,7 @@ class LRU_Pager : public Pager {
 			return frameNum;
 		}
 
-		void update_frames(int frameIndex, std::vector<unsigned int> * framesInMemory) {
+		void update_frames(unsigned int frameIndex, std::vector<unsigned int> * framesInMemory) {
 			for(unsigned int i=0; i < framesInMemory->size(); i++){
 				if(framesInMemory->at(i) == frameIndex){
 					framesInMemory->erase(framesInMemory->begin()+i);
